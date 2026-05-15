@@ -1,5 +1,5 @@
 /**
- * Meet Hang-Up Guard — Content Script
+ * Before You Leave — Content Script
  *
  * Watches for the "Leave call" button in Google Meet's DOM,
  * injects a lock overlay, and requires confirmation before hanging up.
@@ -16,15 +16,8 @@
   const GEMINI_SEND_LABELS = ["Send", "Submit"];
   const GEMINI_SIDEBAR_TIMEOUT_MS = 5000;
 
-  const SUMMARY_PROMPT =
-    "This is an AI summary of a 1:1 meeting, help me summarize it in a few bullet points " +
-    "(split by topic discussed) with takeaway and actions.\n" +
-    "Keep it short, no more than 10 topics, the less the better.\n" +
-    "Topics points shorter than 50 words.\n" +
-    "Actions shorter than 30 words.\n" +
-    "Follow the Structure:\n" +
-    "Notes: - topic description - topic comment1 / 2 / 3…\n" +
-    "Actions: - Action 1 / 2 / 3";
+  // Active prompt loaded from template storage
+  let activePrompt = null;
 
   let overlay = null;
   let hangUpButton = null;
@@ -73,10 +66,10 @@
     return container.querySelector('button[type="submit"]');
   }
 
-  function injectPromptIntoField(field) {
+  function injectPromptIntoField(field, promptText) {
     if (field.isContentEditable) {
       field.focus();
-      field.textContent = SUMMARY_PROMPT;
+      field.textContent = promptText;
       field.dispatchEvent(
         new InputEvent("input", { bubbles: true, inputType: "insertText" })
       );
@@ -87,16 +80,16 @@
         "value"
       );
       if (nativeSetter && nativeSetter.set) {
-        nativeSetter.set.call(field, SUMMARY_PROMPT);
+        nativeSetter.set.call(field, promptText);
       } else {
-        field.value = SUMMARY_PROMPT;
+        field.value = promptText;
       }
       field.dispatchEvent(new Event("input", { bubbles: true }));
       field.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }
 
-  function waitForInputAndSubmit() {
+  function waitForInputAndSubmit(promptText) {
     const deadline = Date.now() + GEMINI_SIDEBAR_TIMEOUT_MS;
 
     const sidebarObserver = new MutationObserver(function () {
@@ -123,7 +116,7 @@
       if (!field) return;
 
       sidebarObserver.disconnect();
-      injectPromptIntoField(field);
+      injectPromptIntoField(field, promptText);
 
       // Brief delay for UI to register the input before clicking send
       setTimeout(function () {
@@ -151,14 +144,18 @@
     });
   }
 
-  function triggerGeminiSummary() {
+  async function triggerGeminiSummary(promptText) {
+    if (!promptText) {
+      const template = await globalThis.TemplateStorage.getDefault();
+      promptText = template.prompt;
+    }
     const geminiBtn = findGeminiToggle();
     if (!geminiBtn) {
       showToast("Gemini is not available");
       return;
     }
     geminiBtn.click();
-    waitForInputAndSubmit();
+    waitForInputAndSubmit(promptText);
   }
 
   // ── Confirmation dialog ──────────────────────────────────────────

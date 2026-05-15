@@ -6,7 +6,7 @@
   "content_scripts": [
     {
       "matches": ["https://meet.google.com/*"],
-      "js": ["content.js"],
+      "js": ["template-storage.js", "content.js"],
       "css": ["dialog.css"],
       "run_at": "document_idle"
     }

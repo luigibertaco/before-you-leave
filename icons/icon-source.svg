@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <!-- Background: rounded red square -->
+  <rect x="8" y="8" width="112" height="112" rx="24" fill="#EA4335"/>
+  <!-- Door shape -->
+  <rect x="38" y="28" width="40" height="72" rx="4" fill="#FFFFFF" opacity="0.95"/>
+  <!-- Door handle -->
+  <circle cx="70" cy="64" r="4" fill="#EA4335"/>
+  <!-- Arrow pointing left (exit indicator) -->
+  <path d="M88 52 L104 64 L88 76" fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="104" y1="64" x2="82" y2="64" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"/>
+  <!-- Small notepad/clipboard at bottom-right -->
+  <rect x="80" y="76" width="28" height="24" rx="3" fill="#FFFFFF"/>
+  <line x1="86" y1="83" x2="102" y2="83" stroke="#EA4335" stroke-width="2" stroke-linecap="round"/>
+  <line x1="86" y1="89" x2="98" y2="89" stroke="#EA4335" stroke-width="2" stroke-linecap="round"/>
+  <line x1="86" y1="95" x2="95" y2="95" stroke="#EA4335" stroke-width="2" stroke-linecap="round"/>
+</svg>

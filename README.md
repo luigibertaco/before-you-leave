@@ -13,7 +13,7 @@ Never lose your Google Meet notes. A Chrome extension that guards the hang-up bu
 
 |                Lock overlay                 |                 Confirmation dialog                  |                 Prompt sent                 |                 Options page                  |
 | :-----------------------------------------: | :--------------------------------------------------: | :-----------------------------------------: | :-------------------------------------------: |
-| ![Lock button](screenshots/lock-button.jpg) | ![Modal with prompts](screenshots/modal-prompts.jpg) | ![Prompt sent](screenshots/prompt-sent.jpg) | ![Options page](screenshots/options-page.jpg) |
+| ![Lock button](screenshots/lock-button.jpeg) | ![Modal with prompts](screenshots/modal-prompts.jpeg) | ![Prompt sent](screenshots/prompt-sent.jpeg) | ![Options page](screenshots/options-page.jpeg) |
 
 ## Install (unpacked)
 

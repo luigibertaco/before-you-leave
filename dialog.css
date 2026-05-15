@@ -1,0 +1,151 @@
+/* ── Meet Hang-Up Guard: Overlay & Dialog ── */
+
+/* Lock icon overlay */
+.mhg-lock-overlay {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  cursor: pointer;
+  border-radius: 50%;
+  background: rgba(234, 67, 53, 0.85);
+  border: none;
+  padding: 0;
+  pointer-events: auto;
+  transition: background 0.15s ease;
+}
+
+.mhg-lock-overlay:hover {
+  background: rgba(234, 67, 53, 1);
+}
+
+.mhg-lock-overlay:focus-visible {
+  outline: 2px solid #8ab4f8;
+  outline-offset: 2px;
+}
+
+.mhg-lock-overlay img {
+  width: 60%;
+  height: 60%;
+  pointer-events: none;
+}
+
+/* Backdrop */
+.mhg-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Confirmation dialog */
+.mhg-dialog {
+  background: #2d2e30;
+  color: #e8eaed;
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 320px;
+  max-width: 400px;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.mhg-dialog-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 8px 0;
+  color: #e8eaed;
+}
+
+.mhg-dialog-message {
+  font-size: 14px;
+  color: #9aa0a6;
+  margin: 0 0 24px 0;
+  line-height: 1.5;
+}
+
+.mhg-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* Shared button base */
+.mhg-btn {
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 24px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.mhg-btn:focus-visible {
+  outline: 2px solid #8ab4f8;
+  outline-offset: 2px;
+}
+
+/* Stay button (safe default) */
+.mhg-btn-stay {
+  background: #8ab4f8;
+  color: #202124;
+}
+
+.mhg-btn-stay:hover {
+  background: #aecbfa;
+}
+
+/* Leave call button (destructive) */
+.mhg-btn-leave {
+  background: transparent;
+  color: #f28b82;
+  border: 1px solid #5f6368;
+}
+
+.mhg-btn-leave:hover {
+  background: rgba(242, 139, 130, 0.08);
+}
+
+/* Summarize & Stay button (accent) */
+.mhg-btn-summarize {
+  background: #a8dab5;
+  color: #202124;
+}
+
+.mhg-btn-summarize:hover {
+  background: #81c995;
+}
+
+/* Toast notification */
+.mhg-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100001;
+  background: #3c4043;
+  color: #e8eaed;
+  font-family: 'Google Sans', Roboto, Arial, sans-serif;
+  font-size: 14px;
+  padding: 12px 24px;
+  border-radius: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  animation: mhg-toast-in 0.2s ease;
+}
+
+@keyframes mhg-toast-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}

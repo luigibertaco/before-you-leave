@@ -1,6 +1,6 @@
 # Before You Leave
 
-Never lose your meeting notes. A Chrome extension that guards the Google Meet hang-up button and offers one-click AI summaries via Meet's built-in Gemini.
+Never lose your Google Meet notes. A Chrome extension that guards the hang-up button and offers one-click AI summaries via Ask Gemini.
 
 ## Features
 

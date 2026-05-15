@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Before You Leave",
   "version": "1.0.0",
-  "description": "Never lose your meeting notes. Before You Leave guards the hang-up button and offers one-click AI summaries via Google Meet's Gemini.",
+  "description": "Never lose your Google Meet notes. Before You Leave guards the hang-up button and offers one-click AI summaries via Ask Gemini.",
   "content_scripts": [
     {
       "matches": [

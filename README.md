@@ -9,6 +9,12 @@ Never lose your meeting notes. A Chrome extension that guards the Google Meet ha
 - **Customizable templates** — configure prompt templates for different meeting types (1:1, team, actions)
 - **Privacy-first** — zero network requests, no data collection, no tracking
 
+## Screenshots
+
+| Lock overlay | Confirmation dialog | Prompt sent | Options page |
+|:---:|:---:|:---:|:---:|
+| ![Lock button](screenshots/lock-button.png) | ![Modal with prompts](screenshots/modal-prompts.png) | ![Prompt sent](screenshots/prompt-sent.png) | ![Options page](screenshots/options-page.png) |
+
 ## Install (unpacked)
 
 1. Clone this repo

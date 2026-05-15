@@ -1,11 +1,34 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <title>Before You Leave — Options</title>
+  <link rel="stylesheet" href="options.css">
 </head>
 <body>
-  <h1>Before You Leave — Options</h1>
-  <p>Template management coming soon.</p>
+  <div class="container">
+    <h1>Before You Leave</h1>
+    <p class="subtitle">Prompt Template Settings</p>
+
+    <div id="template-list"></div>
+
+    <button id="add-btn" class="btn btn-add">+ Add Template</button>
+
+    <div id="add-form" class="form hidden">
+      <h3>New Template</h3>
+      <label for="new-name">Name</label>
+      <input type="text" id="new-name" placeholder="Template name" maxlength="60">
+      <label for="new-prompt">Prompt</label>
+      <textarea id="new-prompt" rows="6" placeholder="Enter the prompt text…"></textarea>
+      <div class="form-actions">
+        <button id="save-new-btn" class="btn btn-save">Save</button>
+        <button id="cancel-new-btn" class="btn btn-cancel">Cancel</button>
+      </div>
+      <p id="add-error" class="error hidden"></p>
+    </div>
+  </div>
+
+  <script src="template-storage.js"></script>
+  <script src="options.js"></script>
 </body>
 </html>

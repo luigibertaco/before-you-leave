@@ -1,0 +1,243 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #1a1a1d;
+  color: #e8eaed;
+  font-family: "Google Sans", Roboto, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.subtitle {
+  color: #9aa0a6;
+  margin-bottom: 24px;
+}
+
+/* ── Template list ─────────────────────────────────── */
+
+.template-card {
+  background: #2d2e30;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+
+.template-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.template-name {
+  font-size: 16px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.badge {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #3c4043;
+  color: #9aa0a6;
+}
+
+.template-prompt-preview {
+  color: #9aa0a6;
+  font-size: 13px;
+  white-space: pre-wrap;
+  max-height: 60px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.template-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Default radio ─────────────────────────────────── */
+
+.default-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #8ab4f8;
+}
+
+.default-label input[type="radio"] {
+  accent-color: #8ab4f8;
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+
+.btn {
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-add {
+  background: #8ab4f8;
+  color: #1a1a1d;
+  font-weight: 500;
+  margin-top: 8px;
+}
+
+.btn-add:hover {
+  background: #aecbfa;
+}
+
+.btn-edit {
+  background: #3c4043;
+  color: #e8eaed;
+}
+
+.btn-edit:hover {
+  background: #4a4d51;
+}
+
+.btn-delete {
+  background: transparent;
+  color: #f28b82;
+  border: 1px solid #f28b82;
+}
+
+.btn-delete:hover {
+  background: rgba(242, 139, 130, 0.1);
+}
+
+.btn-save {
+  background: #a8dab5;
+  color: #1a1a1d;
+  font-weight: 500;
+}
+
+.btn-save:hover {
+  background: #c1e8cb;
+}
+
+.btn-cancel {
+  background: #3c4043;
+  color: #e8eaed;
+}
+
+.btn-cancel:hover {
+  background: #4a4d51;
+}
+
+/* ── Form ──────────────────────────────────────────── */
+
+.form {
+  background: #2d2e30;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 16px;
+}
+
+.form h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.form label {
+  display: block;
+  font-size: 13px;
+  color: #9aa0a6;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.form label:first-of-type {
+  margin-top: 0;
+}
+
+.form input[type="text"],
+.form textarea {
+  width: 100%;
+  background: #1a1a1d;
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #e8eaed;
+  font-family: inherit;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.form input[type="text"]:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: #8ab4f8;
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* ── Inline edit ───────────────────────────────────── */
+
+.edit-name-input,
+.edit-prompt-input {
+  width: 100%;
+  background: #1a1a1d;
+  border: 1px solid #3c4043;
+  border-radius: 6px;
+  padding: 6px 10px;
+  color: #e8eaed;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.edit-prompt-input {
+  resize: vertical;
+  min-height: 80px;
+  margin-top: 8px;
+}
+
+.edit-name-input:focus,
+.edit-prompt-input:focus {
+  outline: none;
+  border-color: #8ab4f8;
+}
+
+/* ── Error ─────────────────────────────────────────── */
+
+.error {
+  color: #f28b82;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+/* ── Utility ───────────────────────────────────────── */
+
+.hidden {
+  display: none !important;
+}

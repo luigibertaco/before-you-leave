@@ -5,9 +5,16 @@
   "description": "Never lose your meeting notes. Before You Leave guards the hang-up button and offers one-click AI summaries via Google Meet's Gemini.",
   "content_scripts": [
     {
-      "matches": ["https://meet.google.com/*"],
-      "js": ["template-storage.js", "content.js"],
-      "css": ["dialog.css"],
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "js": [
+        "template-storage.js",
+        "content.js"
+      ],
+      "css": [
+        "dialog.css"
+      ],
       "run_at": "document_idle"
     }
   ],
@@ -16,12 +23,18 @@
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
   },
-  "permissions": ["storage"],
+  "permissions": [
+    "storage"
+  ],
   "options_page": "options.html",
   "web_accessible_resources": [
     {
-      "resources": ["lock-icon.svg"],
-      "matches": ["https://meet.google.com/*"]
+      "resources": [
+        "lock-icon.svg"
+      ],
+      "matches": [
+        "https://meet.google.com/*"
+      ]
     }
   ]
 }

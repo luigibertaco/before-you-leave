@@ -160,8 +160,18 @@
 
   // ── Confirmation dialog ──────────────────────────────────────────
 
-  function showDialog() {
+  async function showDialog() {
     if (dialogBackdrop) return; // already open
+
+    // Load templates for the split button
+    let templates = [];
+    let defaultTemplate = null;
+    try {
+      templates = await globalThis.TemplateStorage.getTemplates();
+      defaultTemplate = await globalThis.TemplateStorage.getDefault();
+    } catch (e) {
+      // Storage unavailable — fall back to no template picker
+    }
 
     dialogBackdrop = document.createElement("div");
     dialogBackdrop.className = "mhg-backdrop";
@@ -184,9 +194,55 @@
     const actions = document.createElement("div");
     actions.className = "mhg-dialog-actions";
 
+    // ── Split button: Summarize & Stay ──
+    const splitContainer = document.createElement("div");
+    splitContainer.className = "mhg-split-btn-container";
+
     const summarizeBtn = document.createElement("button");
-    summarizeBtn.className = "mhg-btn mhg-btn-summarize";
-    summarizeBtn.textContent = "Summarize & Stay";
+    summarizeBtn.className = "mhg-btn mhg-btn-summarize mhg-split-main";
+    const templateName = defaultTemplate ? defaultTemplate.name : "Summarize";
+    summarizeBtn.textContent = "Summarize & Stay (" + templateName + ")";
+
+    summarizeBtn.addEventListener("click", function () {
+      dismissDialog();
+      triggerGeminiSummary(defaultTemplate ? defaultTemplate.prompt : null);
+    });
+
+    splitContainer.appendChild(summarizeBtn);
+
+    // Caret dropdown — only if more than one template
+    let dropdown = null;
+    if (templates.length > 1) {
+      const caret = document.createElement("button");
+      caret.className = "mhg-btn mhg-btn-summarize mhg-split-caret";
+      caret.textContent = "▾";
+      caret.setAttribute("aria-label", "Choose template");
+
+      dropdown = document.createElement("div");
+      dropdown.className = "mhg-dropdown hidden";
+
+      templates.forEach(function (t) {
+        const item = document.createElement("button");
+        item.className = "mhg-dropdown-item";
+        if (defaultTemplate && t.id === defaultTemplate.id) {
+          item.classList.add("mhg-dropdown-default");
+        }
+        item.textContent = (defaultTemplate && t.id === defaultTemplate.id ? "● " : "  ") + t.name;
+        item.addEventListener("click", function () {
+          dismissDialog();
+          triggerGeminiSummary(t.prompt);
+        });
+        dropdown.appendChild(item);
+      });
+
+      caret.addEventListener("click", function (e) {
+        e.stopPropagation();
+        dropdown.classList.toggle("hidden");
+      });
+
+      splitContainer.appendChild(caret);
+      splitContainer.appendChild(dropdown);
+    }
 
     const leaveBtn = document.createElement("button");
     leaveBtn.className = "mhg-btn mhg-btn-leave";
@@ -196,7 +252,7 @@
     stayBtn.className = "mhg-btn mhg-btn-stay";
     stayBtn.textContent = "Stay";
 
-    actions.appendChild(summarizeBtn);
+    actions.appendChild(splitContainer);
     actions.appendChild(leaveBtn);
     actions.appendChild(stayBtn);
     dialog.appendChild(title);
@@ -217,22 +273,23 @@
       leaveCall();
     });
 
-    summarizeBtn.addEventListener("click", function () {
-      dismissDialog();
-      triggerGeminiSummary();
-    });
-
     // Escape dismisses
     dialogBackdrop.addEventListener("keydown", function (e) {
       if (e.key === "Escape") {
         e.stopPropagation();
+        // Close dropdown first if open
+        if (dropdown && !dropdown.classList.contains("hidden")) {
+          dropdown.classList.add("hidden");
+          return;
+        }
         dismissDialog();
       }
       // Trap tab focus inside dialog
       if (e.key === "Tab") {
-        const focusable = [summarizeBtn, leaveBtn, stayBtn];
-        const first = focusable[0];
-        const last = focusable[focusable.length - 1];
+        const focusable = dialog.querySelectorAll("button");
+        const focusableArr = Array.from(focusable);
+        const first = focusableArr[0];
+        const last = focusableArr[focusableArr.length - 1];
         if (e.shiftKey && document.activeElement === first) {
           e.preventDefault();
           last.focus();

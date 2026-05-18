@@ -60,6 +60,19 @@ describe("Template Storage Module", () => {
       const templates = await getTemplates(); // re-read
       assert.equal(templates.length, 3);
     });
+
+    it("returns starter templates before custom templates", async () => {
+      await getTemplates();
+      const custom = await saveTemplate({ name: "Custom", prompt: "Do something" });
+
+      store.byl_templates = [custom, ...BUILT_IN_TEMPLATES];
+
+      const templates = await getTemplates();
+      assert.deepEqual(
+        templates.map((t) => t.id),
+        ["builtin-1on1", "builtin-team", "builtin-actions", custom.id]
+      );
+    });
   });
 
   describe("saveTemplate", () => {
@@ -106,11 +119,30 @@ describe("Template Storage Module", () => {
       assert.ok(!all.find((t) => t.id === saved.id));
     });
 
-    it("rejects deletion of built-in templates", async () => {
+    it("removes built-in starter templates", async () => {
       await getTemplates();
-      await assert.rejects(() => deleteTemplate("builtin-1on1"), {
-        message: "Cannot delete built-in templates",
-      });
+      await deleteTemplate("builtin-1on1");
+
+      const all = await getTemplates();
+      assert.equal(all.length, 2);
+      assert.ok(!all.find((t) => t.id === "builtin-1on1"));
+    });
+
+    it("keeps deleted starter templates deleted on later reads", async () => {
+      await getTemplates();
+      await deleteTemplate("builtin-team");
+
+      const firstRead = await getTemplates();
+      const secondRead = await getTemplates();
+
+      assert.deepEqual(
+        firstRead.map((t) => t.id),
+        ["builtin-1on1", "builtin-actions"]
+      );
+      assert.deepEqual(
+        secondRead.map((t) => t.id),
+        ["builtin-1on1", "builtin-actions"]
+      );
     });
 
     it("throws for non-existent template", async () => {
@@ -129,6 +161,15 @@ describe("Template Storage Module", () => {
       await deleteTemplate(custom.id);
       const def = await getDefault();
       assert.equal(def.id, "builtin-1on1");
+    });
+
+    it("falls back default to first remaining template when built-in default is deleted", async () => {
+      await getTemplates();
+
+      await deleteTemplate("builtin-1on1");
+
+      const def = await getDefault();
+      assert.equal(def.id, "builtin-team");
     });
   });
 

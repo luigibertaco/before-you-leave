@@ -147,6 +147,10 @@
   async function triggerGeminiSummary(promptText) {
     if (!promptText) {
       const template = await globalThis.TemplateStorage.getDefault();
+      if (!template) {
+        showToast("No summary templates configured");
+        return;
+      }
       promptText = template.prompt;
     }
     const geminiBtn = findGeminiToggle();
@@ -199,9 +203,14 @@
     splitContainer.className = "mhg-split-btn-container";
 
     const summarizeBtn = document.createElement("button");
-    summarizeBtn.className = "mhg-btn mhg-btn-summarize mhg-split-main";
-    const templateName = defaultTemplate ? defaultTemplate.name : "Summarize";
-    summarizeBtn.textContent = "Summarize & Stay (" + templateName + ")";
+    summarizeBtn.className = "mhg-btn mhg-btn-summarize";
+    if (templates.length > 1) {
+      summarizeBtn.classList.add("mhg-split-main");
+    }
+    summarizeBtn.disabled = !defaultTemplate;
+    summarizeBtn.textContent = defaultTemplate
+      ? "Summarize & Stay (" + defaultTemplate.name + ")"
+      : "Summarize & Stay";
 
     summarizeBtn.addEventListener("click", function () {
       dismissDialog();

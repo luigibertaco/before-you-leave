@@ -74,6 +74,11 @@ h1 {
   gap: 8px;
 }
 
+.empty-state {
+  color: #9aa0a6;
+  margin-bottom: 12px;
+}
+
 /* ── Default radio ─────────────────────────────────── */
 
 .default-label {

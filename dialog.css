@@ -91,6 +91,11 @@
   outline-offset: 2px;
 }
 
+.mhg-btn:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
 /* Stay button (safe default) */
 .mhg-btn-stay {
   background: #8ab4f8;
@@ -120,6 +125,10 @@
 
 .mhg-btn-summarize:hover {
   background: #81c995;
+}
+
+.mhg-btn-summarize:disabled:hover {
+  background: #a8dab5;
 }
 
 /* Toast notification */

@@ -171,6 +171,17 @@ describe("Template Storage Module", () => {
       const def = await getDefault();
       assert.equal(def.id, "builtin-team");
     });
+
+    it("returns null default when every template is deleted", async () => {
+      await getTemplates();
+
+      await deleteTemplate("builtin-1on1");
+      await deleteTemplate("builtin-team");
+      await deleteTemplate("builtin-actions");
+
+      assert.deepEqual(await getTemplates(), []);
+      assert.equal(await getDefault(), null);
+    });
   });
 
   describe("getDefault / setDefault", () => {
@@ -209,6 +220,29 @@ describe("Template Storage Module", () => {
       store.byl_default_id = "deleted-id";
       const def = await getDefault();
       assert.equal(def.id, "builtin-1on1"); // falls back to first built-in
+    });
+
+    it("does not reseed templates when initialized storage is empty", async () => {
+      store.byl_initialized = true;
+      store.byl_templates = [];
+      store.byl_default_id = null;
+
+      assert.deepEqual(await getTemplates(), []);
+      assert.equal(await getDefault(), null);
+    });
+
+    it("uses a newly added template as the default after the list was empty", async () => {
+      store.byl_initialized = true;
+      store.byl_templates = [];
+      store.byl_default_id = null;
+
+      const saved = await saveTemplate({ name: "Rebuilt", prompt: "Summarize this" });
+
+      assert.deepEqual(
+        (await getTemplates()).map((t) => t.id),
+        [saved.id]
+      );
+      assert.equal((await getDefault()).id, saved.id);
     });
   });
 });

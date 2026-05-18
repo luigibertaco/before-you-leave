@@ -25,6 +25,14 @@
     const defaultTemplate = await TemplateStorage.getDefault();
     listEl.innerHTML = "";
 
+    if (templates.length === 0) {
+      const empty = document.createElement("p");
+      empty.className = "empty-state";
+      empty.textContent = "No templates yet.";
+      listEl.appendChild(empty);
+      return;
+    }
+
     templates.forEach((t) => {
       const card = document.createElement("div");
       card.className = "template-card";

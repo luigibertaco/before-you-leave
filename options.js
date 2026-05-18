@@ -52,7 +52,7 @@
     if (t.builtIn) {
       const badge = document.createElement("span");
       badge.className = "badge";
-      badge.textContent = "Built-in";
+      badge.textContent = "Starter example";
       header.appendChild(badge);
     }
 
@@ -74,7 +74,7 @@
     const radio = document.createElement("input");
     radio.type = "radio";
     radio.name = "default-template";
-    radio.checked = defaultTemplate.id === t.id;
+    radio.checked = Boolean(defaultTemplate && defaultTemplate.id === t.id);
     radio.addEventListener("change", async () => {
       await TemplateStorage.setDefault(t.id);
       render();
@@ -92,16 +92,16 @@
         render();
       });
       actions.appendChild(editBtn);
-
-      const deleteBtn = document.createElement("button");
-      deleteBtn.className = "btn btn-delete";
-      deleteBtn.textContent = "Delete";
-      deleteBtn.addEventListener("click", async () => {
-        await TemplateStorage.deleteTemplate(t.id);
-        render();
-      });
-      actions.appendChild(deleteBtn);
     }
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "btn btn-delete";
+    deleteBtn.textContent = "Delete";
+    deleteBtn.addEventListener("click", async () => {
+      await TemplateStorage.deleteTemplate(t.id);
+      render();
+    });
+    actions.appendChild(deleteBtn);
 
     card.appendChild(actions);
   }

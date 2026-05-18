@@ -2,7 +2,7 @@
  * Template Storage Module
  *
  * CRUD operations for prompt templates using chrome.storage.sync.
- * Built-in templates are seeded on first install and cannot be deleted.
+ * Starter templates are seeded on first install and can be deleted, but not edited.
  */
 
 const BUILT_IN_TEMPLATES = [
@@ -107,15 +107,14 @@ async function saveTemplate(template) {
 }
 
 /**
- * Delete a custom template by id. Rejects for built-in templates.
- * If the deleted template was the default, falls back to first built-in.
+ * Delete a template by id.
+ * If the deleted template was the default, falls back to the first remaining template.
  * @param {string} id
  */
 async function deleteTemplate(id) {
   const templates = await getTemplates();
   const target = templates.find((t) => t.id === id);
   if (!target) throw new Error("Template not found: " + id);
-  if (target.builtIn) throw new Error("Cannot delete built-in templates");
 
   const filtered = templates.filter((t) => t.id !== id);
   await chrome.storage.sync.set({ [STORAGE_KEYS.templates]: filtered });
@@ -123,9 +122,8 @@ async function deleteTemplate(id) {
   // Fall back default if deleted template was default
   const defaultId = await _getDefaultId();
   if (defaultId === id) {
-    const firstBuiltIn = filtered.find((t) => t.builtIn);
     await chrome.storage.sync.set({
-      [STORAGE_KEYS.defaultId]: firstBuiltIn ? firstBuiltIn.id : filtered[0]?.id,
+      [STORAGE_KEYS.defaultId]: filtered[0]?.id,
     });
   }
 }
@@ -141,13 +139,13 @@ async function _getDefaultId() {
 
 /**
  * Get the default template.
- * @returns {Promise<Object>}
+ * @returns {Promise<Object|undefined>}
  */
 async function getDefault() {
   const templates = await getTemplates();
   const defaultId = await _getDefaultId();
   const found = templates.find((t) => t.id === defaultId);
-  return found || templates.find((t) => t.builtIn) || templates[0];
+  return found || templates[0];
 }
 
 /**

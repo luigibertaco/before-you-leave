@@ -106,11 +106,16 @@ describe("Template Storage Module", () => {
       assert.ok(!all.find((t) => t.id === saved.id));
     });
 
-    it("rejects deletion of built-in templates", async () => {
+    it("removes starter templates without reseeding them", async () => {
       await getTemplates();
-      await assert.rejects(() => deleteTemplate("builtin-1on1"), {
-        message: "Cannot delete built-in templates",
-      });
+      await deleteTemplate("builtin-team");
+
+      const all = await getTemplates();
+      assert.equal(all.length, 2);
+      assert.deepEqual(
+        all.map((t) => t.id),
+        ["builtin-1on1", "builtin-actions"]
+      );
     });
 
     it("throws for non-existent template", async () => {
@@ -120,7 +125,7 @@ describe("Template Storage Module", () => {
       });
     });
 
-    it("falls back default to first built-in when default is deleted", async () => {
+    it("falls back default to first remaining template when custom default is deleted", async () => {
       await getTemplates();
       const custom = await saveTemplate({ name: "MyDefault", prompt: "Test" });
       await setDefault(custom.id);
@@ -129,6 +134,16 @@ describe("Template Storage Module", () => {
       await deleteTemplate(custom.id);
       const def = await getDefault();
       assert.equal(def.id, "builtin-1on1");
+    });
+
+    it("falls back default to first remaining template when starter default is deleted", async () => {
+      await getTemplates();
+      assert.equal((await getDefault()).id, "builtin-1on1");
+
+      await deleteTemplate("builtin-1on1");
+
+      const def = await getDefault();
+      assert.equal(def.id, "builtin-team");
     });
   });
 
